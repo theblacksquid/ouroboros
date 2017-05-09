@@ -1,0 +1,20 @@
+
+
+
+make-view =
+  (tmpl, init, dispatch) ->
+    let loop (view-init tmpl(init))
+             (ls dispatch)
+      
+      if (null? ls)
+         view-init
+         begin
+           js-invoke $(key(car ls)) 
+                     assoc-ref("action-type", 
+                               assoc-ref(key(car ls), ls))
+                     js-closure
+                       assoc-ref("controller", 
+                               assoc-ref(key(car ls), ls))
+           loop(view-init, cdr(ls))
+
+
